@@ -8,27 +8,29 @@
 
 package main
 
-import "fmt"
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func fibonacci(limit int) {
-  a, b := 1, 1
-  fmt.Println(a)
-  for b < limit {
-    fmt.Println(b)
-    a, b = b, a+b
-  }
+	a, b := 1, 1
+	fmt.Println(a)
+	for b <= limit {
+		fmt.Println(b)
+		a, b = b, a+b
+	}
 }
 
-func sumEvenFib(n1, n2, sumEven int) (int) {
-  sum := n1 + n2
-  if sum > 4000000 {
-    return sumEven
-  }
-  if math.Mod(float64(sum), 2) == 0 {
-    sumEven += sum
-  }
-  return sumEvenFib(n2, sum, sumEven)
+func sumEvenFib(n1, n2, sumEven int) int {
+	sum := n1 + n2
+	if sum > 4000000 {
+		return sumEven
+	}
+	if math.Mod(float64(sum), 2) == 0 {
+		sumEven += sum
+	}
+	return sumEvenFib(n2, sum, sumEven)
 }
 
 func main() {
