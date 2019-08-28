@@ -11,29 +11,26 @@ package main
 import (
 	"fmt"
 	"math"
+	"time"
+
+	"github.com/alanbhamilton/euler/util"
 )
 
-func fibonacci(limit int) {
-	a, b := 1, 1
-	fmt.Println(a)
-	for b <= limit {
-		fmt.Println(b)
-		a, b = b, a+b
-	}
-}
+const limit int = 4e6
 
-func sumEvenFib(n1, n2, sumEven int) int {
-	sum := n1 + n2
-	if sum > 4000000 {
-		return sumEven
+func sumEvenFib(limit int) int {
+	defer util.Timetrack(time.Now(), "sumEvenFib")
+	t1, t2 := 1, 1 // initialize the first two terms
+	sumEven := 0
+	for t2 <= limit {
+		if math.Mod(float64(t2), 2) == 0 {
+			sumEven += t2 // if the new term is even add it to the sum of even numbers
+		}
+		t1, t2 = t2, t1+t2
 	}
-	if math.Mod(float64(sum), 2) == 0 {
-		sumEven += sum
-	}
-	return sumEvenFib(n2, sum, sumEven)
+	return sumEven
 }
 
 func main() {
-  // fmt.Println("result: ", sumEvenFib(1, 1, 0))
-  fibonacci(1000)
+	fmt.Println("result: ", sumEvenFib(limit))
 }
