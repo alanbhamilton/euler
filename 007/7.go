@@ -1,33 +1,30 @@
+// By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13,
+// we can see that the 6th prime is 13.
+
+// What is the 10001st prime number?
+
 package main
 
 import (
-  "fmt"
-  "math"
+	"fmt"
+
+	"github.com/alanbhamilton/euler/util"
 )
 
-func isPrime(n int) bool {
-  if n == 1 || n == 2 {
-    return true
-  }
-  if math.Mod(float64(n), 2) == 0 {
-    return false
-  }
-  for i := 3; i <= int(math.Floor(math.Sqrt(float64(n)))); i += 2 {
-    if math.Mod(float64(n), (float64(i))) == 0 {
-      return false
-    }
-  }
-  return true
+const nth int = 10001
+
+func getNthPrime(n int) int {
+	count := 0
+	var result int
+	for i := 1; count <= n; i++ {
+		if util.IsPrime(i) {
+			count += 1
+			result = i
+		}
+	}
+	return result
 }
 
 func main() {
-  count := 0
-  var result int
-  for i := 1; count <= 10001 ; i++ {
-    if isPrime(i) {
-      count += 1
-      result = i
-    }
-  }
-  fmt.Println(result)
+	fmt.Println(getNthPrime(nth))
 }
