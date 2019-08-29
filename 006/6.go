@@ -15,22 +15,28 @@ package main
 
 import "fmt"
 
+const seriesLimit int = 100
+
 func sumOfSquares(n int) int {
-  result := 0
-  for i := 1; i <= n; i++ {
-    result += i * i
-  }
-  return result
+	sum := 0
+	for i := 1; i <= n; i++ {
+		sum += i * i
+	}
+	return sum
 }
 
 func squareOfSum(n int) int {
-  result := 0
-  for i := 1; i <= n; i++ {
-    result += i
-  }
-  return result * result
+	sum := 0
+	for i := 1; i <= n; i++ {
+		sum += i
+	}
+	return sum * sum
+}
+
+func difference(seriesLimit int) int {
+	return squareOfSum(seriesLimit) - sumOfSquares(seriesLimit)
 }
 
 func main() {
-  fmt.Println(squareOfSum(100) - sumOfSquares(100))
+	fmt.Println(difference(seriesLimit))
 }
