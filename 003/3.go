@@ -2,7 +2,7 @@
 //
 // What is the largest prime factor of the number 600851475143 ?
 
-// check numbers up to floor(sqrt(N)) + 1, not N/2.
+// check numbers up to floor(sqrt(N)), not N/2.
 
 package main
 
@@ -10,42 +10,25 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"time"
+
+	"github.com/alanbhamilton/euler/util"
 )
 
-func isPrime(n int) bool {
-	if n == 1 || n == 2 {
-		return true
-	}
-	if math.Mod(float64(n), 2) == 0 {
-		return false
-	}
-	for i := 3; i <= int(math.Floor(math.Sqrt(float64(n)))); i += 2 {
-		if math.Mod(float64(n), (float64(i))) == 0 {
-			return false
-		}
-	}
-	return true
-}
-
-func isFactorOf(num1 int, num2 int) bool {
-	if math.Mod(float64(num1), float64(num2)) == 0 {
-		return true
-	} else {
-		return false
-	}
-}
+const number int = 600851475143
 
 func getPrimeFactors(num int) []int {
 	retval := make([]int, 0)
 
-	if isPrime(num) {
+	if util.IsPrime(num) {
 		retval = append(retval, num)
 	} else {
 		limit := int(math.Floor(math.Sqrt(float64(num))))
 		for i := 2; i <= limit; i++ {
-			if isPrime(i) && isFactorOf(num, i) {
+			if util.IsPrime(i) && util.IsFactorOf(num, i) {
+				remainder := num / i
 				retval = append(retval, i)
-				retval = append(retval, getPrimeFactors(num / i)...)
+				retval = append(retval, getPrimeFactors(remainder)...)
 				break
 			}
 		}
@@ -53,10 +36,15 @@ func getPrimeFactors(num int) []int {
 	return retval
 }
 
-func main() {
-	primeFactors := getPrimeFactors(600851475143)
+func getLargestPrimeFactor(n int) int {
+	primeFactors := getPrimeFactors(n)
 	sort.Ints(primeFactors)
-	fmt.Println("prime factors:", primeFactors)
-	largestPrimeFactor := primeFactors[len(primeFactors) - 1]
+	// fmt.Println("prime factors:", primeFactors)
+	return primeFactors[len(primeFactors)-1]
+}
+
+func main() {
+	defer util.Timetrack(time.Now(), "getPrimeFactors")
+	largestPrimeFactor := getLargestPrimeFactor(number)
 	fmt.Println("largest prime factor:", largestPrimeFactor)
 }
