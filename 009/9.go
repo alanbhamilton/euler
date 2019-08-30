@@ -8,37 +8,50 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
 
-func pyTest(a int, b int, c int) bool {
-  if a*a + b*b == c*c {
-    return true
-  } else {
-    return false
-  }
+	"github.com/alanbhamilton/euler/util"
+)
+
+const sum int = 1000
+
+func isPyTriplet(a, b, c int) bool {
+	if a*a+b*b == c*c {
+		return true
+	}
+	return false
 }
 
-func findPyTriplet(num int) []int {
-  for c := num - 3; c >= (num / 3); c-- {
-    a := 1
-    b := num - c - a
-    for ; a < b; {
-      if pyTest(a, b, c) {
-        return []int{a, b, c}
-      }
-      a++
-      b--
-    }
-  }
-  return []int{0, 0, 0}
+func findPyTriplets(num int) [][]int {
+	var triplets [][]int
+	for c := num; c >= 3; c-- {
+		for b := c - 1; b >= 2; b-- {
+			for a := b - 1; a >= 1; a-- {
+				if isPyTriplet(a, b, c) {
+					triplets = append(triplets, []int{a, b, c})
+				}
+			}
+		}
+	}
+	return triplets
+}
+
+func findPyTripletWithSum(sum int) []int {
+	triplets := findPyTriplets(sum)
+	for _, t := range triplets {
+		if t[0]+t[1]+t[2] == sum {
+			return t
+		}
+	}
+	return []int{0, 0, 0}
 }
 
 func main() {
-  triplet := findPyTriplet(1000)
-  prod := triplet[0]
-  for i := 1; i < len(triplet); i++ {
-      prod *= triplet[i]
-  }
-  fmt.Println("triplet:", triplet)
-  fmt.Println("product:", prod)
+	defer util.Timetrack(time.Now(), "findPyTripletWithSum")
+	triplet := findPyTripletWithSum(sum)
+	product := triplet[0] * triplet[1] * triplet[2]
+	fmt.Println("triplet:", triplet)
+	fmt.Println("product:", product)
 }
