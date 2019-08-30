@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/alanbhamilton/euler/util"
 )
@@ -26,5 +27,6 @@ func getNthPrime(n int) int {
 }
 
 func main() {
+	defer util.Timetrack(time.Now(), "getNthPrime")
 	fmt.Println(getNthPrime(nth))
 }

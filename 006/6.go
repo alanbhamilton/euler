@@ -13,7 +13,12 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+
+	"github.com/alanbhamilton/euler/util"
+)
 
 const seriesLimit int = 100
 
@@ -38,5 +43,6 @@ func difference(seriesLimit int) int {
 }
 
 func main() {
+	defer util.Timetrack(time.Now(), "difference")
 	fmt.Println(difference(seriesLimit))
 }
