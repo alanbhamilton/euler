@@ -1,6 +1,9 @@
 package util
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestIsPalindrome(t *testing.T) {
 	tests := []struct {
@@ -108,6 +111,35 @@ func TestIsFactorOf(t *testing.T) {
 		}
 		if got := IsFactorOf(tt.inNumber, tt.inFactor); got != tt.out {
 			t.Errorf("results diff on %q\nGOT:\n%t\nWANT:\n%t\n", tt.name, got, tt.out)
+		}
+	}
+}
+
+func TestGetPrimes(t *testing.T) {
+	tests := []struct {
+		name string
+		skip bool
+		in   int
+		out  []int
+	}{
+		{
+			name: "primes below 10",
+			in:   10,
+			out:  []int{2, 3, 5, 7},
+		},
+		{
+			name: "primes below 121",
+			in:   121,
+			out:  []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113},
+		},
+	}
+
+	for _, tt := range tests {
+		if tt.skip {
+			continue
+		}
+		if got := GetPrimes(tt.in); !reflect.DeepEqual(got, tt.out) {
+			t.Errorf("results diff on %q\nGOT:\n%v\nWANT:\n%v\n", tt.name, got, tt.out)
 		}
 	}
 }

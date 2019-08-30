@@ -43,10 +43,49 @@ func IsPrime(n int) bool {
 	return true // it's a prime
 }
 
-// IsFactor checks if one integer is a factor of another
+// IsFactorOf checks if one integer is a factor of another
 func IsFactorOf(num1 int, num2 int) bool {
 	if math.Mod(float64(num1), float64(num2)) == 0 {
 		return true
 	}
 	return false
+}
+
+type number struct {
+	value   int
+	isPrime bool
+}
+
+func findNextPrime(numbers []number, index int) int {
+	limit := int(math.Floor(math.Sqrt(float64(len(numbers)))))
+	for i := index + 1; i <= limit; i++ {
+		if numbers[i].isPrime {
+			return i
+		}
+	}
+	return len(numbers)
+}
+
+// GetPrimes calculates all primes below an integer value using sieve of eratosthenes
+func GetPrimes(n int) []int {
+	// initialize the numbers struct of size N
+	numbers := make([]number, n)
+	for i := 2; i < len(numbers); i++ {
+		numbers[i] = number{value: i, isPrime: true}
+	}
+	// look for the primes up the the square root of N and mark multiples as not prime
+	limit := int(math.Floor(math.Sqrt(float64(n))))
+	for p := 2; p <= limit; p = findNextPrime(numbers, p) {
+		for i := p + p; i < n; i += p {
+			numbers[i].isPrime = false
+		}
+	}
+	// collect the primes
+	var primes []int
+	for _, num := range numbers {
+		if num.isPrime {
+			primes = append(primes, num.value)
+		}
+	}
+	return primes
 }

@@ -1,31 +1,30 @@
+// The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+
+// Find the sum of all the primes below two million.
+
+// TODO: calculate all primes using a seive, then get the sum
+
 package main
 
 import (
-  "fmt"
-  "math"
+	"fmt"
+	"time"
+
+	"github.com/alanbhamilton/euler/util"
 )
 
-func isPrime(n int) bool {
-  if n == 1 || n == 2 {
-    return true
-  }
-  if math.Mod(float64(n), 2) == 0 {
-    return false
-  }
-  for i := 3; i <= int(math.Floor(math.Sqrt(float64(n)))); i += 2 {
-    if math.Mod(float64(n), (float64(i))) == 0 {
-      return false
-    }
-  }
-  return true
+const limit int = 2e6
+
+func sumOfPrimes(n int) int {
+	primes := util.GetPrimes(n)
+	sum := 0
+	for _, p := range primes {
+		sum += p
+	}
+	return sum
 }
 
 func main() {
-  sum := 2
-  for i := 3; i < 2000000; i += 2 {
-    if isPrime(i) {
-      sum += i
-    }
-  }
-  fmt.Println(sum)
+	defer util.Timetrack(time.Now(), fmt.Sprintf("sum of primes below %d", limit))
+	fmt.Println(sumOfPrimes(limit))
 }
