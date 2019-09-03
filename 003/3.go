@@ -18,22 +18,17 @@ import (
 const number int = 600851475143
 
 func getPrimeFactors(num int) []int {
-	retval := make([]int, 0)
-
 	if util.IsPrime(num) {
-		retval = append(retval, num)
-	} else {
-		limit := int(math.Floor(math.Sqrt(float64(num))))
-		for i := 2; i <= limit; i++ {
-			if util.IsPrime(i) && util.IsFactorOf(num, i) {
-				remainder := num / i
-				retval = append(retval, i)
-				retval = append(retval, getPrimeFactors(remainder)...)
-				break
-			}
+		return []int{num}
+	}
+	limit := int(math.Floor(math.Sqrt(float64(num))))
+	for i := 2; i <= limit; i++ {
+		if util.IsPrime(i) && util.IsFactorOf(num, i) {
+			remainder := num / i
+			return append([]int{i}, getPrimeFactors(remainder)...)
 		}
 	}
-	return retval
+	return make([]int, 0)
 }
 
 func getLargestPrimeFactor(n int) int {
